@@ -4,20 +4,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "CorridorGameEngine",
+    name: "QuoridorGameEngine",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "CorridorGameEngine",
-            targets: ["CorridorGameEngine"]),
+            name: "QuoridorGameEngine",
+            targets: ["QuoridorGameEngine"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "CorridorGameEngine"),
+            name: "QuoridorGameEngine"),
         .testTarget(
-            name: "CorridorGameEngineTests",
-            dependencies: ["CorridorGameEngine"]),
+            name: "QuoridorGameEngineTests",
+            dependencies: ["QuoridorGameEngine"]),
     ]
 )
