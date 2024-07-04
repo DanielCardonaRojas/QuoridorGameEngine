@@ -48,6 +48,32 @@ final class QuoridorGameEngineTests: XCTestCase {
 
     XCTAssert(result.isErrorMatching(.illegalMove))
   }
+
+  // TODO: Add test
+  func testCannotPlaceBarrierAtBoardSize() { // There are N - 1 barrier slots
+
+  }
+
+  func testJumpsPlayerIfHasContiguousPlayerInTheDirectionOfMovement() {
+    // check that doesn't accidentally jump a barrier
+
+  }
+
+  func testResetsStateWhenPlayerWins() {
+
+  }
+
+  func testIncrementsScoreWhenPlayerWins() {
+
+  }
+
+  func testInitialPlayerPositions() {
+
+  }
+
+  func testCannotPlaceBarrierThatCompletelyBlockOtherPlayers() {
+    // This is the hardest to test
+  }
 }
 
 extension Result  {
