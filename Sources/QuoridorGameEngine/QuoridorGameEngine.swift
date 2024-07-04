@@ -20,27 +20,9 @@ public class QuoridorGameEngine {
     }
   }
 
-  public enum Event: CustomStringConvertible {
-    public var description: String {
-      switch self {
-      case .move(let direction):
-        return "Move \(direction)"
-      case .placeBarrier(let position):
-        return "PlaceBarrier \(position.position) \(position.endPosition)"
-      case .changeTurn:
-        return "Change turn"
-      }
-    }
-
-    case move(direction: Direction) // Move or jump
-    case placeBarrier(position: BarrierPosition)
-    case changeTurn
-  }
-
-
   // Since tile position are the lines in the board grid this should be constrained by boardSize - 1
   // Tiles are 2 x 1
-  public struct BarrierPosition: Equatable {
+  public struct BarrierPosition: Equatable, Codable {
     public let position: Position
     public let vertical: Bool
 
@@ -66,7 +48,7 @@ public class QuoridorGameEngine {
     case notTurn
   }
 
-  public enum Direction {
+  public enum Direction: String, Codable {
     case up
     case down
     case left

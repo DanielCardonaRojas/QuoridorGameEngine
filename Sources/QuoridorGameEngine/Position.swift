@@ -8,7 +8,7 @@
 import Foundation
 
 extension QuoridorGameEngine {
-  public struct Position: Equatable, CustomStringConvertible {
+  public struct Position: Equatable, CustomStringConvertible, Codable {
     let x: Int
     let y: Int
 
