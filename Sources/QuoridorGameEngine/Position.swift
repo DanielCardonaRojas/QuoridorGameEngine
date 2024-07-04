@@ -46,47 +46,5 @@ extension QuoridorGameEngine {
       }
     }
 
-    func outOfBounds(boardSize: Int) -> Bool {
-      x < 1 || x > boardSize || y < 1 || y > boardSize
-    }
-
-    func move(direction: Direction, boardSize: Int, barriers: [BarrierPosition]) throws -> Position {
-      var newPosition: Position = self
-      switch direction {
-      case .up:
-        newPosition = moveUp()
-      case .down:
-        newPosition = moveDown()
-      case .left:
-        newPosition = moveLeft()
-      case .right:
-        newPosition = moveRight()
-      }
-
-      if newPosition.outOfBounds(boardSize: boardSize) {
-        throw GameError.illegalMove
-      }
-
-      let isBlockedByBarrier = barriers.contains(where: { tile in
-        switch direction {
-        case .up:
-          tile.horizontal && barriers.contains(where: { $0.position == self || $0.endPosition == self })
-        case .down:
-          tile.horizontal && barriers.contains(where: { $0.position == newPosition || $0.endPosition == newPosition })
-        case .left:
-          tile.vertical && barriers.contains(where: { $0.position == newPosition || $0.endPosition == newPosition })
-        case .right:
-          tile.vertical && barriers.contains(where: { $0.position == self || $0.endPosition == self })
-        }
-
-      })
-
-      guard !isBlockedByBarrier else {
-        throw GameError.illegalMove
-      }
-
-
-      return newPosition
-    }
   }
 }

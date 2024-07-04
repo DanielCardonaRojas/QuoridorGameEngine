@@ -50,6 +50,16 @@ final class QuoridorGameEngineTests: XCTestCase {
   }
 
   // TODO: Add test
+  func testInitialScoreIsZeroForAllPlayers() {
+    XCTAssert(sut.state.score.values.reduce(true, { acc, score in acc && score == .zero }))
+    XCTAssertFalse(sut.state.score.values.isEmpty)
+  }
+
+  func testInitialBarrierCountForEachPlayerIsEqual() { // All players have the same amount of barriers
+    XCTAssert(sut.state.playerBarriers.values.reduce(true, { acc, count in acc && count == sut.state.boardSize }))
+    XCTAssertFalse(sut.state.playerBarriers.values.isEmpty)
+  }
+
   func testCannotPlaceBarrierAtBoardSize() { // There are N - 1 barrier slots
 
   }
@@ -63,7 +73,14 @@ final class QuoridorGameEngineTests: XCTestCase {
 
   }
 
-  func testIncrementsScoreWhenPlayerWins() {
+  func testIncrementsScoreWhenPlayerWins() throws {
+    for _ in 1...sut.state.boardSize {
+      try sut.handleEvent(player: player1, event: .move(direction: .down))
+      try sut.handleEvent(player: player2, event: .move(direction: .up))
+    }
+
+    XCTAssertEqual(sut.state.score[player1], 1, "Player 1 scores 1")
+    XCTAssertEqual(sut.state.score[player2], 0, "Player 2 scores 0")
 
   }
 
@@ -71,8 +88,16 @@ final class QuoridorGameEngineTests: XCTestCase {
 
   }
 
+  func testReducesPlayerBarriersWhenPlacesOne() throws {
+    let initialCount = try XCTUnwrap(sut.state.playerBarriers[player1])
+    XCTAssert(initialCount > 0, "Has available barriers")
+    try sut.handleEvent(player: player1, event: .placeBarrier(position: .init(position: .init(x: 1, y: 1), vertical: false)))
+    let finalCount = try XCTUnwrap(sut.state.playerBarriers[player1])
+    XCTAssertEqual(finalCount, initialCount - 1, "Reduces barrier count by one")
+  }
+
   func testCannotPlaceBarrierThatCompletelyBlockOtherPlayers() {
-    // This is the hardest to test
+    // This is the hardest to test in the general case
   }
 }
 

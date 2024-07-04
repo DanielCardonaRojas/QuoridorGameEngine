@@ -6,7 +6,7 @@ public class QuoridorGameEngine {
   public static let maxPlayers = 4
 
   public typealias Score = [Player: Int]
-  public typealias TileCount = [Player: Int]
+  public typealias PlayerBarriers = [Player: Int]
 
   public enum BoardSide: Int, Equatable, CaseIterable {
     case top = 0, right = 1, bottom = 2, left = 3
