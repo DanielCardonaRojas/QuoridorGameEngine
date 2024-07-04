@@ -88,7 +88,7 @@ public class QuoridorGameEngine {
     case .move(let direction):
       try state.move(player: player, direction: direction)
     case .placeBarrier(position: let barrierPosition):
-      try state.move(player: player, barrierPosition: barrierPosition)
+      try state.placeBarrier(player: player, barrierPosition: barrierPosition)
     case .changeTurn:
       state.advanceTurn()
     }

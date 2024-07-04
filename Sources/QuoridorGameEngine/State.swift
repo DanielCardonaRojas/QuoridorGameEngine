@@ -136,7 +136,7 @@ extension QuoridorGameEngine {
       }
     }
 
-    mutating func move(player: Player, barrierPosition: BarrierPosition) throws {
+    mutating func placeBarrier(player: Player, barrierPosition: BarrierPosition) throws {
       guard
         !barrierPositions.contains(where: { $0 == barrierPosition }),
         !outOfBounds(barrierPosition.position),
