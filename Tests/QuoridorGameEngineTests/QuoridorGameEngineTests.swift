@@ -30,7 +30,7 @@ final class QuoridorGameEngineTests: XCTestCase {
     let xPositions = [0, sut.state.boardSize]
 
     for position in xPositions {
-      let event = QuoridorGameEngine.Event.placeBarrier(position: .init(position: .init(x: position, y: 1), vertical: false))
+      let event = QuoridorGameEngine.Event.placeBarrier(position: .horizontal(x: position, y: 1))
 
       let result = Result {
         try sut.handleEvent(player: player1, event: event)
@@ -42,7 +42,7 @@ final class QuoridorGameEngineTests: XCTestCase {
 
   func testThrowsErrorWhenMovingInDirectionOfBarrier()  {
     let result = Result {
-      try sut.handleEvent(player: player1 , event: .placeBarrier(position: .init(position: .init(x: 5, y: 1), vertical: false)))
+      try sut.handleEvent(player: player1 , event: .placeBarrier(position: .horizontal(x: 5, y: 1)))
       try sut.handleEvent(player: player1, event: .changeTurn)
       try sut.handleEvent(player: player2, event: .move(direction: .up))
     }
@@ -94,7 +94,7 @@ final class QuoridorGameEngineTests: XCTestCase {
   func testReducesPlayerBarriersWhenPlacesOne() throws {
     let initialCount = try XCTUnwrap(sut.state.playerBarriers[player1])
     XCTAssert(initialCount > 0, "Has available barriers")
-    try sut.handleEvent(player: player1, event: .placeBarrier(position: .init(position: .init(x: 1, y: 1), vertical: false)))
+    try sut.handleEvent(player: player1, event: .placeBarrier(position: .horizontal(x: 1, y: 1)))
     let finalCount = try XCTUnwrap(sut.state.playerBarriers[player1])
     XCTAssertEqual(finalCount, initialCount - 1, "Reduces barrier count by one")
   }

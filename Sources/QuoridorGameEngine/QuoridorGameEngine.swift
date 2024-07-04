@@ -51,6 +51,14 @@ public class QuoridorGameEngine {
     public var endPosition: Position {
       Position(x: vertical ? position.x : position.x + 1, y: vertical ? position.y + 1 : position.y)
     }
+
+    static func horizontal(x: Int, y: Int) -> Self {
+      BarrierPosition(position: Position(x: x, y: y), vertical: false)
+    }
+
+    static func vertical(x: Int, y: Int) -> Self {
+      BarrierPosition(position: Position(x: x, y: y), vertical: true)
+    }
   }
 
   public enum GameError: Error, Equatable {
