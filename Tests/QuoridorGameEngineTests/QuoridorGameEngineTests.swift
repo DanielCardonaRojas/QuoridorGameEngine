@@ -43,6 +43,7 @@ final class QuoridorGameEngineTests: XCTestCase {
   func testThrowsErrorWhenMovingInDirectionOfBarrier()  {
     let result = Result {
       try sut.handleEvent(player: player1 , event: .placeBarrier(position: .init(position: .init(x: 5, y: 1), vertical: false)))
+      try sut.handleEvent(player: player1, event: .changeTurn)
       try sut.handleEvent(player: player2, event: .move(direction: .up))
     }
 
@@ -76,7 +77,9 @@ final class QuoridorGameEngineTests: XCTestCase {
   func testIncrementsScoreWhenPlayerWins() throws {
     for _ in 1...sut.state.boardSize {
       try sut.handleEvent(player: player1, event: .move(direction: .down))
+      try sut.handleEvent(player: player1, event: .changeTurn)
       try sut.handleEvent(player: player2, event: .move(direction: .up))
+      try sut.handleEvent(player: player2, event: .changeTurn)
     }
 
     XCTAssertEqual(sut.state.score[player1], 1, "Player 1 scores 1")
@@ -98,6 +101,22 @@ final class QuoridorGameEngineTests: XCTestCase {
 
   func testCannotPlaceBarrierThatCompletelyBlockOtherPlayers() {
     // This is the hardest to test in the general case
+  }
+
+  func testCanRebuildStateFromHistory() throws {
+    let moves: [QuoridorGameEngine.Direction] =  [.down, .up, .left, .right]
+
+    for move in moves {
+      try sut.handleEvent(player: sut.state.turn, event: .move(direction: move))
+      try sut.handleEvent(player: sut.state.turn, event: .changeTurn)
+    }
+
+    let otherGameState = QuoridorGameEngine()
+    for (player, event) in sut.history {
+      try otherGameState.handleEvent(player: player, event: event)
+    }
+
+    XCTAssertEqual(otherGameState.state, sut.state, "Game states should be synchronized")
   }
 }
 

@@ -27,11 +27,14 @@ public class QuoridorGameEngine {
         return "Move \(direction)"
       case .placeBarrier(let position):
         return "PlaceBarrier \(position.position) \(position.endPosition)"
+      case .changeTurn:
+        return "Change turn"
       }
     }
 
     case move(direction: Direction) // Move or jump
     case placeBarrier(position: BarrierPosition)
+    case changeTurn
   }
 
 
@@ -65,6 +68,9 @@ public class QuoridorGameEngine {
   // MARK: Properties
   var state: State
 
+  /// Allows time travel and can be used to rebuild state in disconnected clients
+  var history: [(Player, Event)] = []
+
   public var eventLogger: ((Player, Event, State) -> Void)?
 
   public init(boardSize: Int = normalBoardSize, numberOfPlayers: Int = 2) {
@@ -83,10 +89,12 @@ public class QuoridorGameEngine {
       try state.move(player: player, direction: direction)
     case .placeBarrier(position: let barrierPosition):
       try state.move(player: player, barrierPosition: barrierPosition)
+    case .changeTurn:
+      state.advanceTurn()
     }
 
+    history.append((player, event))
     eventLogger?(player, event, state)
-    state.advanceTurn()
     return state
   }
 
